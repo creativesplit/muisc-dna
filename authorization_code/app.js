@@ -12,6 +12,8 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var rp = require('request-promise')
+const axios = require('axios')
 
 var client_id = '8932cfe6e57c4bf393f1fa7a6983c559'; // Your client id
 var client_secret = '8c02b84cee4645d08e2679b7f2ee0b08'; // Your secret
@@ -71,7 +73,8 @@ app.get('/callback', function(req, res) {
       querystring.stringify({
         error: 'state_mismatch'
       }));
-  } else {
+  } 
+  else {
     res.clearCookie(stateKey);
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
@@ -102,6 +105,108 @@ app.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           console.log(body);
         });
+
+        
+        // // This is to turn the authorization code into a token with which to pull user data
+        // axios.post('https://accounts.spotify.com/api/token',
+        //     {
+        //         method: 'POST',
+        //         headers:{
+        //             Authorization: Basic<'8932cfe6e57c4bf393f1fa7a6983c559':'8c02b84cee4645d08e2679b7f2ee0b08'>
+        //         }
+        //         body:{
+        //             grant_type: authorization_code,
+        //             code: 'code',
+        //             redirect_uri: 'http://localhost:8888'
+        //         }
+        //     }
+        
+        // //Gets the user's playlists.  The 'tracks' array should return all the tracks within the playlist
+        // fetch('/v1/me/playlists',
+        //     {
+        //     method: 'POST',
+        //     headers:{
+
+        //     }
+        //     body: JSON.stringify({
+        //         id: String,
+        //         name: String,
+        //         tracks: Array,
+        //         uri: String,        //not sure I need this
+        //     }))
+        // .then(response => {
+        //     //store response in 
+        // })
+
+        // axios.get('/v1/me/top/{type}')
+        //     {
+        //     method: 'GET',
+        //     headers:{
+        //         authorization: {access_token},
+
+
+        //     }
+        //     body: JSON.stringify({
+        //         artist:{
+        //             genres: Array,
+        //             name: String,
+        //             popularity: Number,
+        //             uri: String,
+        //         },
+        //         track: {
+        //             artists: Array,
+        //             name: String,
+        //             popularity: Number,
+        //             explicity: Boolean,
+        //             id: String,
+
+        //         }
+
+        //     })
+        //     console.log()
+        //     }
+
+        // )
+        // }
+
+        // .ajax(
+        //     {
+        //       method: "POST",
+        //       url: "https://accounts.spotify.com/api/token",
+        //       data: {
+        //         "grant_type":    "authorization_code",
+        //         "code":          code,
+        //         "redirect_uri":  'http://localhost:8888',
+        //         "client_secret":  '8c02b84cee4645d08e2679b7f2ee0b08',
+        //         "client_id":     '8932cfe6e57c4bf393f1fa7a6983c559',
+        //       },
+        //       success: function(result) {
+        //         // handle result...
+        //       },
+        //     }
+        //   )
+        //   //Gets the current users playlists
+        //   .then(get('/v1/me/playlists', (req,res, next)=>{
+        //       res.send('#')
+        //   }))
+        //   //Gets the tracks within a playlist
+        //   .then(get('/v1/playlists/{playlist_id}/tracks', (req,res, next)=>{
+        //       res.send(#)
+        //   }))
+        //   //Gets the user's top artists and tracks
+        //   .then(get('/v1/me/top/{type}', (req,res, next)=>{
+        //       res.send(#)
+        //   }))
+        //   //Gets a user's saved tracks
+        //   .then(get('/v1/me/tracks', (req,res, next)=>{
+        //         res.send(#)
+        //   })
+        //   //Get a user's followed artists
+        //   .then(get('/v1/me/following?type=artist', (req,res)=>{
+        //       res.send(#)
+        //   }))
+        // }
+
 
         // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
