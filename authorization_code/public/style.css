@@ -1,0 +1,31 @@
+body{
+    background-image: url('https://i.imgur.com/qChWWDC.jpg');
+    background-size: 100% 200%;
+    background-position: 400% 10%;
+    background-repeat: no-repeat;
+    justify-content: left;
+    color: white;
+   
+}
+h1{
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 80px;
+    margin-left: 40px;
+    margin-right: 40px;
+
+}
+p{
+    text-align: left;
+    justify-content: left;
+    margin-bottom: 90px;
+    margin-right: 50px;
+    margin-left: 50px;
+
+}
+
+
+
+
+
+
