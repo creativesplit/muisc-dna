@@ -14,6 +14,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var rp = require('request-promise')
 const axios = require('axios')
+var SpotifyWebApi = require('spotify-web-api-node');
 
 var client_id = '8932cfe6e57c4bf393f1fa7a6983c559'; // Your client id
 var client_secret = '8c02b84cee4645d08e2679b7f2ee0b08'; // Your secret
@@ -101,10 +102,32 @@ app.get('/callback', function(req, res) {
           json: true
         };
 
-        // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-          console.log(body);
+       
+
+        // credentials are optional
+        var spotifyApi = new SpotifyWebApi({
+        clientId: '8932cfe6e57c4bf393f1fa7a6983c559',
+        clientSecret: '8c02b84cee4645d08e2679b7f2ee0b08',
+        redirectUri: 'http://www.example.com/callback'
         });
+        
+        spotifyApi.setAccessToken(access_token);
+
+        spotifyApi.getMySavedTracks({
+            limit : 150,
+            offset: 0
+          })
+          .then(function(data) {
+            console.log('Done!');
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
+        
+        // use the access token to access the Spotify Web API
+        // request.get(options, function(error, response, body) {
+            
+        //   console.log(body);
+        // });
 
         
         // // This is to turn the authorization code into a token with which to pull user data
