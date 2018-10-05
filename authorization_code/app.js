@@ -271,5 +271,11 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-console.log('Listening on 8888');
-app.listen(8888);
+
+app.set('port', process.env.PORT || 3001)
+
+  app.listen(app.get('port'), () => {
+    console.log(`PORT: ${app.get('port')}`)
+  })
+// console.log('Listening on 8888');
+// app.listen(8888);
