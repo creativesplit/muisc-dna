@@ -14,11 +14,16 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var rp = require('request-promise')
 const axios = require('axios')
+var app = express();
+app.set('port', process.env.PORT || 3001)
+let port = app.get('port')
 var SpotifyWebApi = require('spotify-web-api-node');
 
 var client_id = '8932cfe6e57c4bf393f1fa7a6983c559'; // Your client id
 var client_secret = '8c02b84cee4645d08e2679b7f2ee0b08'; // Your secret
-var redirect_uri = 'http://localhost:8888'; // Your redirect uri
+var redirect_uri = ('http://localhost:'+port); // Your redirect uri
+
+console.log(port)
 
 /**
  * Generates a random string containing numbers and letters
@@ -36,8 +41,6 @@ var generateRandomString = function(length) {
 };
 
 var stateKey = 'spotify_auth_state';
-
-var app = express();
 
 app.use(express.static(__dirname + '/public'))
    .use(cors())
@@ -104,30 +107,30 @@ app.get('/callback', function(req, res) {
 
        
 
-        // credentials are optional
-        var spotifyApi = new SpotifyWebApi({
-        clientId: '8932cfe6e57c4bf393f1fa7a6983c559',
-        clientSecret: '8c02b84cee4645d08e2679b7f2ee0b08',
-        redirectUri: 'http://www.example.com/callback'
-        });
-        
-        spotifyApi.setAccessToken(access_token);
-
-        spotifyApi.getMySavedTracks({
-            limit : 150,
-            offset: 0
-          })
-          .then(function(data) {
-            console.log('Done!');
-          }, function(err) {
-            console.log('Something went wrong!', err);
-          });
-        
-        // use the access token to access the Spotify Web API
-        // request.get(options, function(error, response, body) {
-            
-        //   console.log(body);
+        // // credentials are optional
+        // var spotifyApi = new SpotifyWebApi({
+        // clientId: '8932cfe6e57c4bf393f1fa7a6983c559',
+        // clientSecret: '8c02b84cee4645d08e2679b7f2ee0b08',
+        // redirectUri: 'http://www.example.com/callback'
         // });
+        
+        // spotifyApi.setAccessToken(access_token);
+
+        // spotifyApi.getMySavedTracks({
+        //     limit : 150,
+        //     offset: 0
+        //   })
+        //   .then(function(data) {
+        //     console.log('Done!');
+        //   }, function(err) {
+        //     console.log('Something went wrong!', err);
+        //   });
+        
+        //use the access token to access the Spotify Web API
+        request.get(options, function(error, response, body) {
+            console.log('response', response)
+          console.log('body', body);
+        });
 
         
         // // This is to turn the authorization code into a token with which to pull user data
@@ -272,7 +275,7 @@ app.get('/refresh_token', function(req, res) {
 });
 
 
-app.set('port', process.env.PORT || 3001)
+
 
   app.listen(app.get('port'), () => {
     console.log(`PORT: ${app.get('port')}`)
